@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldWideJobs - Global Job Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .navbar-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .navbar button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .navbar button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .landing-page {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #7c3aed;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #7c3aed;
+        }
+        
+        .btn-secondary:hover {
+            background: #f3e8ff;
+            transform: translateY(-2px);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .feature-card h3 {
+            color: #7c3aed;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .auth-tabs button {
+            flex: 1;
+            padding: 0.75rem;
+            background: #e5e7eb;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .auth-tabs button.active {
+            background: #7c3aed;
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        .sidebar button {
+            width: 100%;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background: #f3e8ff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sidebar button.active {
+            background: #7c3aed;
+            color: white;
+        }
+        
+        .sidebar button:hover {
+            background: #ede9fe;
+        }
+        
+        .sidebar button.active:hover {
+            background: #6d28d9;
+        }
+        
+        .main-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .job-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .job-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .job-card h3 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .job-card .company {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .job-card .salary {
+            color: #059669;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .job-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        
+        .job-tag {
+            background: #dbeafe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .modal-close:hover {
+            color: #1f2937;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #059669;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .search-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-filters input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .application-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #7c3aed;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-rejected {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+        
+        .interview-slot {
+            background: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .interview-time {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .cv-form {
+            max-width: 500px;
+        }
+        
+        .cv-form .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .cv-preview {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .chat-interface {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+        
+        .chat-message.assistant {
+            justify-content: flex-start;
+        }
+        
+        .message-bubble {
+            max-width: 60%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .user .message-bubble {
+            background: #7c3aed;
+            color: white;
+        }
+        
+        .assistant .message-bubble {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #333;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chat-input-area input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .chat-input-area button {
+            padding: 0.75rem 1.5rem;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .chat-input-area button:hover {
+            background: #6d28d9;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        const SAMPLE_JOBS = [
+            {
+                id: 1,
+                title: "Senior Software Engineer",
+                company: "Tech Corp",
+                location: "Remote",
+                salary: "$120,000 - $160,000",
+                description: "We're looking for an experienced software engineer to join our team.",
+                type: "Full-time",
+                tags: ["React", "Node.js", "AWS"]
+            },
+            {
+                id: 2,
+                title: "Product Manager",
+                company: "StartUp Inc",
+                location: "San Francisco, CA",
+                salary: "$100,000 - $130,000",
+                description: "Lead product strategy and development for our platform.",
+                type: "Full-time",
+                tags: ["Leadership", "Strategy", "Analytics"]
+            },
+            {
+                id: 3,
+                title: "UX Designer",
+                company: "Design Studio",
+                location: "Remote",
+                salary: "$80,000 - $110,000",
+                description: "Create beautiful and intuitive user experiences.",
+                type: "Full-time",
+                tags: ["Figma", "Design", "Prototyping"]
+            },
+            {
+                id: 4,
+                title: "Data Scientist",
+                company: "AI Solutions",
+                location: "New York, NY",
+                salary: "$110,000 - $150,000",
+                description: "Build machine learning models and data pipelines.",
+                type: "Full-time",
+                tags: ["Python", "ML", "TensorFlow"]
+            },
+            {
+                id: 5,
+                title: "DevOps Engineer",
+                company: "Cloud Systems",
+                location: "Remote",
+                salary: "$95,000 - $140,000",
+                description: "Manage cloud infrastructure and deployment pipelines.",
+                type: "Full-time",
+                tags: ["Docker", "Kubernetes", "CI/CD"]
+            }
+        ];
+        
+        function WorldWideJobs() {
+            const [page, setPage] = useState('landing');
+            const [isLogin, setIsLogin] = useState(true);
+            const [user, setUser] = useState(null);
+            const [activeTab, setActiveTab] = useState('search');
+            const [selectedJob, setSelectedJob] = useState(null);
+            const [searchQuery, setSearchQuery] = useState('');
+            const [locationFilter, setLocationFilter] = useState('');
+            const [notification, setNotification] = useState('');
+            const [chatInput, setChatInput] = useState('');
+            const [aiChat, setAiChat] = useState([
+                { role: "assistant", content: "Hi! I'm your AI Career Assistant. How can I help you today?" }
+            ]);
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                password: ''
+            });
+            const [cvData, setCvData] = useState({
+                fullName: '',
+                email: '',
+                phone: '',
+                skills: '',
+                experience: ''
+            });
+            const [applications, setApplications] = useState([
+                { id: 1, job: "Senior Software Engineer", company: "Tech Corp", status: "pending" },
+                { id: 2, job: "Product Manager", company: "StartUp Inc", status: "approved" },
+                { id: 3, job: "UX Designer", company: "Design Studio", status: "rejected" }
+            ]);
+            
+            const showNotification = (message) => {
+                setNotification(message);
+                setTimeout(() => setNotification(''), 3000);
+            };
+            
+            const handleAuth = () => {
+                if (formData.name && formData.email && formData.password) {
+                    setUser({ name: formData.name, email: formData.email });
+                    setPage('dashboard');
+                    showNotification(`Welcome back, ${formData.name}!`);
+                    setFormData({ name: '', email: '', password: '' });
+                }
+            };
+            
+            const handleLogout = () => {
+                setUser(null);
+                setPage('landing');
+                setFormData({ name: '', email: '', password: '' });
+                setActiveTab('search');
+            };
+            
+            const handleApplyJob = () => {
+                if (selectedJob) {
+                    showNotification(`Applied for ${selectedJob.title}!`);
+                    setSelectedJob(null);
+                }
+            };
+            
+            const sendChat = async () => {
+                if (!chatInput.trim()) return;
+                const msg = chatInput.trim();
+                setChatInput("");
+                const responses = [
+                    "That's great! Let me help you with that.",
+                    "I found some great opportunities for you.",
+                    "Based on your profile, I recommend these positions.",
+                    "Your CV looks excellent! Ready to apply?"
+                ];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                setAiChat([...aiChat, { role: "user", content: msg }, { role: "assistant", content: response }]);
+            };
+            
+            const filteredJobs = SAMPLE_JOBS.filter(job => {
+                const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    job.company.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesLocation = locationFilter === '' || job.location.toLowerCase().includes(locationFilter.toLowerCase());
+                return matchesSearch && matchesLocation;
+            });
+            
+            const handleGenerateCV = () => {
+                showNotification("CV Generated Successfully!");
+            };
+            
+            return (
+                <div>
+                    <nav className="navbar">
+                        <h1>🌍 WorldWideJobs</h1>
+                        <div className="navbar-right">
+                            {user && <span>{user.name}</span>}
+                            {user && <button onClick={handleLogout}>Logout</button>}
+                        </div>
+                    </nav>
+                    
+                    {notification && <div className="notification">{notification}</div>}
+                    
+                    {page === 'landing' && (
+                        <div className="container landing-page">
+                            <div className="hero">
+                                <h2>Find Your Dream Job Worldwide</h2>
+                                <p>Discover thousands of opportunities across the globe</p>
+                                <div className="hero-buttons">
+                                    <button className="btn-secondary" onClick={() => setPage('auth')}>Sign In</button>
+                                    <button className="btn-secondary" onClick={() => setPage('auth')}>Get Started</button>
+                                </div>
+                            </div>
+                            
+                            <div className="features-grid">
+                                <div className="feature-card">
+                                    <h3>🔍 Smart Search</h3>
+                                    <p>Find jobs that match your skills and preferences</p>
+                                </div>
+                                <div className="feature-card">
+                                    <h3>💼 Job Alerts</h3>
+                                    <p>Get notified about new opportunities instantly</p>
+                                </div>
+                                <div className="feature-card">
+                                    <h3>🤖 AI Assistant</h3>
+                                    <p>Get personalized career advice and guidance</p>
+                                </div>
+                                <div className="feature-card">
+                                    <h3>📄 CV Builder</h3>
+                                    <p>Create professional CV in minutes</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {page === 'auth' && (
+                        <div className="container">
+                            <div className="auth-container">
+                                <div className="auth-tabs">
+                                    <button className={isLogin ? 'active' : ''} onClick={() => setIsLogin(true)}>Login</button>
+                                    <button className={!isLogin ? 'active' : ''} onClick={() => setIsLogin(false)}>Sign Up</button>
+                                </div>
+                                
+                                <div className="form-group">
+                                    {!isLogin && (
+                                        <>
+                                            <label>Full Name</label>
+                                            <input
+                                                type="text"
+                                                value={formData.name}
+                                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                                placeholder="John Doe"
+                                            />
+                                        </>
+                                    )}
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        placeholder="your@email.com"
+                                    />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label>Password</label>
+                                    <input
+                                        type="password"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+                                
+                                <button className="btn-primary" onClick={handleAuth} style={{width: '100%'}}>
+                                    {isLogin ? 'Login' : 'Sign Up'}
+                                </button>
+                                <button style={{width: '100%', marginTop: '1rem', background: '#e5e7eb', color: '#333'}} onClick={() => setPage('landing')}>
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {page === 'dashboard' && user && (
+                        <div className="container">
+                            <div className="dashboard">
+                                <div className="sidebar">
+                                    <button 
+                                        className={activeTab === 'search' ? 'active' : ''} 
+                                        onClick={() => setActiveTab('search')}
+                                    >
+                                        🔍 Search Jobs
+                                    </button>
+                                    <button 
+                                        className={activeTab === 'applied' ? 'active' : ''} 
+                                        onClick={() => setActiveTab('applied')}
+                                    >
+                                        ✅ Applied
+                                    </button>
+                                    <button 
+                                        className={activeTab === 'cv' ? 'active' : ''} 
+                                        onClick={() => setActiveTab('cv')}
+                                    >
+                                        📄 CV Builder
+                                    </button>
+                                    <button 
+                                        className={activeTab === 'interviews' ? 'active' : ''} 
+                                        onClick={() => setActiveTab('interviews')}
+                                    >
+                                        📅 Interviews
+                                    </button>
+                                    <button 
+                                        className={activeTab === 'chat' ? 'active' : ''} 
+                                        onClick={() => setActiveTab('chat')}
+                                    >
+                                        💬 AI
+                                    </button>
+                                </div>
+                                
+                                <div className="main-content">
+                                    {activeTab === 'search' && (
+                                        <>
+                                            <h2>Find Jobs</h2>
+                                            <div className="search-filters">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search by job title or company..."
+                                                    value={searchQuery}
+                                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Filter by location..."
+                                                    value={locationFilter}
+                                                    onChange={(e) => setLocationFilter(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="jobs-grid">
+                                                {filteredJobs.map(job => (
+                                                    <div key={job.id} className="job-card" onClick={() => setSelectedJob(job)}>
+                                                        <h3>{job.title}</h3>
+                                                        <div className="company">{job.company}</div>
+                                                        <div className="salary">{job.salary}</div>
+                                                        <div style={{fontSize: '0.9rem', color: '#6b7280'}}>{job.location} • {job.type}</div>
+                                                        <div className="job-tags">
+                                                            {job.tags.map((tag, i) => (
+                                                                <span key={i} className="job-tag">{tag}</span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                    
+                                    {activeTab === 'applied' && (
+                                        <>
+                                            <h2>My Applications</h2>
+                                            {applications.map(app => (
+                                                <div key={app.id} className="application-item">
+                                                    <h3>{app.job}</h3>
+                                                    <div style={{color: '#6b7280'}}>{app.company}</div>
+                                                    <span className={`status-badge status-${app.status}`}>
+                                                        {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </>
+                                    )}
+                                    
+                                    {activeTab === 'cv' && (
+                                        <>
+                                            <h2>CV Builder</h2>
+                                            <div className="cv-form">
+                                                <div className="form-group">
+                                                    <label>Full Name</label>
+                                                    <input
+                                                        type="text"
+                                                        value={cvData.fullName}
+                                                        onChange={(e) => setCvData({...cvData, fullName: e.target.value})}
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Email</label>
+                                                    <input
+                                                        type="email"
+                                                        value={cvData.email}
+                                                        onChange={(e) => setCvData({...cvData, email: e.target.value})}
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Phone</label>
+                                                    <input
+                                                        type="tel"
+                                                        value={cvData.phone}
+                                                        onChange={(e) => setCvData({...cvData, phone: e.target.value})}
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Skills</label>
+                                                    <input
+                                                        type="text"
+                                                        value={cvData.skills}
+                                                        onChange={(e) => setCvData({...cvData, skills: e.target.value})}
+                                                        placeholder="e.g., React, Node.js, Python"
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Experience</label>
+                                                    <input
+                                                        type="text"
+                                                        value={cvData.experience}
+                                                        onChange={(e) => setCvData({...cvData, experience: e.target.value})}
+                                                        placeholder="e.g., 5 years as Senior Developer"
+                                                    />
+                                                </div>
+                                                <button className="btn-primary" onClick={handleGenerateCV}>Generate CV</button>
+                                            </div>
+                                        </>
+                                    )}
+                                    
+                                    {activeTab === 'interviews' && (
+                                        <>
+                                            <h2>Upcoming Interviews</h2>
+                                            <div className="interview-slot">
+                                                <h3>Tech Corp - Senior Software Engineer</h3>
+                                                <div className="interview-time">📅 June 15, 2024 at 2:00 PM</div>
+                                                <div style={{marginTop: '0.5rem'}}>Coding round interview</div>
+                                            </div>
+                                            <div className="interview-slot">
+                                                <h3>AI Solutions - Data Scientist</h3>
+                                                <div className="interview-time">📅 June 18, 2024 at 10:00 AM</div>
+                                                <div style={{marginTop: '0.5rem'}}>HR discussion</div>
+                                            </div>
+                                        </>
+                                    )}
+                                    
+                                    {activeTab === 'chat' && (
+                                        <>
+                                            <h2>AI Career Assistant</h2>
+                                            <div className="chat-interface">
+                                                <div className="chat-messages">
+                                                    {aiChat.map((msg, i) => (
+                                                        <div key={i} className={`chat-message ${msg.role}`}>
+                                                            <div className="message-bubble">{msg.content}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="chat-input-area">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Ask your AI assistant..."
+                                                        value={chatInput}
+                                                        onChange={(e) => setChatInput(e.target.value)}
+                                                        onKeyPress={(e) => e.key === 'Enter' && sendChat()}
+                                                    />
+                                                    <button onClick={sendChat}>Send</button>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {selectedJob && (
+                        <div className="modal active">
+                            <div className="modal-content">
+                                <button className="modal-close" onClick={() => setSelectedJob(null)}>✕</button>
+                                <h2>{selectedJob.title}</h2>
+                                <p style={{color: '#6b7280', marginBottom: '1rem'}}>{selectedJob.company}</p>
+                                <div style={{marginBottom: '1rem'}}>
+                                    <strong>Location:</strong> {selectedJob.location}
+                                </div>
+                                <div style={{marginBottom: '1rem'}}>
+                                    <strong>Salary:</strong> {selectedJob.salary}
+                                </div>
+                                <div style={{marginBottom: '1rem'}}>
+                                    <strong>Description:</strong>
+                                    <p>{selectedJob.description}</p>
+                                </div>
+                                <div style={{marginBottom: '1.5rem'}}>
+                                    <strong>Skills Required:</strong>
+                                    <div className="job-tags" style={{marginTop: '0.5rem'}}>
+                                        {selectedJob.tags.map((tag, i) => (
+                                            <span key={i} className="job-tag">{tag}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <button className="btn-primary" onClick={handleApplyJob}>Apply Now</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<WorldWideJobs />);
+    </script>
+</body>
+</html>
