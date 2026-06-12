@@ -607,6 +607,78 @@
                 { id: 2, job: "Product Manager", company: "StartUp Inc", status: "approved" },
                 { id: 3, job: "UX Designer", company: "Design Studio", status: "rejected" }
             ]);
+            const [internetJobs, setInternetJobs] = useState([]);
+            const [isLoadingJobs, setIsLoadingJobs] = useState(false);
+            const [showInternetJobs, setShowInternetJobs] = useState(false);
+            const [serverConnected, setServerConnected] = useState(false);
+            
+            // Check if backend server is running
+            React.useEffect(() => {
+                fetch('http://localhost:3001/api/health')
+                    .then(() => setServerConnected(true))
+                    .catch(() => setServerConnected(false));
+            }, []);
+            
+            const searchInternetJobs = async () => {
+                if (!serverConnected) {
+                    showNotification('⚠️ Backend server not running. Start it with: npm install && npm start');
+                    return;
+                }
+                
+                setIsLoadingJobs(true);
+                try {
+                    const query = searchQuery || 'Software Engineer';
+                    const location = locationFilter || 'Remote';
+                    const response = await fetch(`http://localhost:3001/api/jobs/search?query=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        setInternetJobs(data.data);
+                        setShowInternetJobs(true);
+                        showNotification(`Found ${data.data.length} jobs on the internet!`);
+                    } else {
+                        showNotification('Error fetching jobs: ' + data.error);
+                    }
+                } catch (error) {
+                    showNotification('Could not connect to job search server');
+                } finally {
+                    setIsLoadingJobs(false);
+                }
+            };
+            
+            const careerMatch = async () => {
+                if (!serverConnected) {
+                    showNotification('⚠️ Backend server not running. Start it with: npm install && npm start');
+                    return;
+                }
+                
+                setIsLoadingJobs(true);
+                try {
+                    const response = await fetch('http://localhost:3001/api/jobs/career-match', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            skills: cvData.skills,
+                            experience: cvData.experience,
+                            location: locationFilter || 'Remote',
+                            jobTitle: searchQuery
+                        })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        setInternetJobs(data.data);
+                        setShowInternetJobs(true);
+                        showNotification(`Found ${data.data.length} jobs matching your career!`);
+                    } else {
+                        showNotification('Error finding matches: ' + data.error);
+                    }
+                } catch (error) {
+                    showNotification('Could not connect to career match service');
+                } finally {
+                    setIsLoadingJobs(false);
+                }
+            };
             
             const showNotification = (message) => {
                 setNotification(message);
@@ -811,6 +883,47 @@
                                                     onChange={(e) => setLocationFilter(e.target.value)}
                                                 />
                                             </div>
+                                            
+                                            <div style={{display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap'}}>
+                                                <button className="btn-primary" onClick={searchInternetJobs} disabled={isLoadingJobs || !serverConnected}>
+                                                    {isLoadingJobs ? '🔄 Searching...' : '🌐 Search Internet'}
+                                                </button>
+                                                <button className="btn-primary" onClick={careerMatch} disabled={isLoadingJobs || !serverConnected} style={{background: '#059669'}}>
+                                                    {isLoadingJobs ? '⏳ Finding matches...' : '🎯 Find Jobs For My Career'}
+                                                </button>
+                                                {!serverConnected && (
+                                                    <div style={{color: '#d97706', fontSize: '0.9rem', padding: '0.5rem', background: '#fef3c7', borderRadius: '4px', width: '100%'}}>
+                                                        ⚠️ Backend server not connected. To search real jobs, run: <code style={{background: '#f0e6b8', padding: '0.25rem 0.5rem', borderRadius: '2px'}}>npm install && npm start</code>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            
+                                            {showInternetJobs && internetJobs.length > 0 && (
+                                                <div style={{marginBottom: '2rem', padding: '1rem', background: '#f0f9ff', borderRadius: '8px', borderLeft: '4px solid #2563eb'}}>
+                                                    <h3 style={{color: '#2563eb', marginBottom: '1rem'}}>🌐 Real Jobs from the Internet ({internetJobs.length})</h3>
+                                                    <div className="jobs-grid">
+                                                        {internetJobs.slice(0, 6).map(job => (
+                                                            <div key={job.id} className="job-card" onClick={() => setSelectedJob(job)} style={{cursor: 'pointer'}}>
+                                                                <h3>{job.title}</h3>
+                                                                <div className="company">{job.company}</div>
+                                                                <div className="salary">{job.salary}</div>
+                                                                <div style={{fontSize: '0.9rem', color: '#6b7280'}}>{job.location} • {job.type}</div>
+                                                                {job.matchScore && <div style={{color: '#059669', fontWeight: '600', marginTop: '0.5rem'}}>Match: {Math.round(job.matchScore)}%</div>}
+                                                                <div className="job-tags">
+                                                                    {job.tags.slice(0, 3).map((tag, i) => (
+                                                                        <span key={i} className="job-tag">{tag}</span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    {job.url && <div style={{marginTop: '1rem'}}>
+                                                        <a href={job.url} target="_blank" style={{color: '#2563eb', textDecoration: 'underline'}}>View more on source →</a>
+                                                    </div>}
+                                                </div>
+                                            )}
+                                            
+                                            <h3 style={{marginTop: '2rem', marginBottom: '1rem'}}>📋 Sample Jobs (Local)</h3>
                                             <div className="jobs-grid">
                                                 {filteredJobs.map(job => (
                                                     <div key={job.id} className="job-card" onClick={() => setSelectedJob(job)}>
