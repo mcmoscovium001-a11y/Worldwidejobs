@@ -23,7 +23,17 @@ A modern, interactive job platform built with React 18 and Babel CDN for client-
 
 ## 🏃 Getting Started
 
-### Option 1: Using HTTP Server (Recommended for Development)
+### Option 1: Run with npm start (Backend + Frontend)
+
+```bash
+cd WORLDWIDEJOBS
+npm install
+npm start
+```
+
+Then open http://127.0.0.1:3001 in your browser.
+
+### Option 2: Using HTTP Server
 
 ```bash
 cd WORLDWIDEJOBS
@@ -32,7 +42,7 @@ npx http-server -p 5500
 
 Then open http://127.0.0.1:5500 in your browser.
 
-### Option 2: Using Live Server in VS Code
+### Option 3: Using Live Server in VS Code
 
 1. Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension
 2. Right-click on `index.html` → "Open with Live Server"

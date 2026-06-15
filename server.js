@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -8,6 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname)));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -156,6 +158,10 @@ function calculateMatchScore(job, skills, experience) {
     score += Math.random() * 10; // Add some variation
     return Math.min(score, 100);
 }
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`🚀 Job Search Server running on http://localhost:${PORT}`);
